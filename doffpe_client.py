@@ -21,9 +21,6 @@ import requests
 import json
 import copy
 
-import general
-general_m = general.general()
-
 # API endpoint URL
 base_url = "http://dofp-service.ptbio.kr/api/v1"
 analysis_url = f"{base_url}/analysis"
