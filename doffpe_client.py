@@ -46,7 +46,6 @@ def parse_args():
 	parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
 	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
 	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.dofp path, and you won't need to provide it again.")
-	parser.add_argument('--environment', default = None, help='If not specified, the script will automatically be executed in the dofp environment.')
 	
 	return parser.parse_args()
 
@@ -170,7 +169,8 @@ if __name__ == "__main__":
 		sys.exit(1) # error
 
 	headers = {
-		'Authorization': 'ApiKey {0}'.format(api_key)
+		'Authorization': 'ApiKey {0}'.format(api_key), 
+		'User-Agent': 'Dofp-Python/1.0.0'
 	}
 
 	# JSON parameter
@@ -202,10 +202,15 @@ if __name__ == "__main__":
 	# request analysis api
 	response = requests.post(analysis_url, headers=headers, files=files, data=data)
 
-	print(response.status_code)
-	print("response.text", response.text)
+	print(f"Response code : {response.status_code}")
+	#print("response.text", response.text)
 	data = response.json()
-	print("data", data)
+	for i in data :
+		print(f"{i} : {data[i]}")
+	#print("data", data)
+	if response.status_code != 200 : 
+		print("Error")
+		sys.exit()
 
 	# log stream
 	url_stream = f"{analysis_url}/{data['seq']}/logs/stream"

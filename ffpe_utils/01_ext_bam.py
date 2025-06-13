@@ -205,9 +205,9 @@ if __name__ == "__main__":
     start_time = time.perf_counter()
 
     ## Display processing status in the CLI
-    stop_event = threading.Event()
-    spinner_thread = threading.Thread(target=show_saving_spinner, args=(stop_event,))
-    spinner_thread.start()
+	#stop_event = threading.Event()
+	#spinner_thread = threading.Thread(target=show_saving_spinner, args=(stop_event,))
+	#spinner_thread.start()
 
     try:
         with concurrent.futures.ProcessPoolExecutor(max_workers=num_worker) as executor:
@@ -247,8 +247,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     finally:
-        stop_event.set()  # Signal that the task is complete
-        spinner_thread.join()  # Wait until the spinner thread finishes
+		#stop_event.set()  # Signal that the task is complete
+		#spinner_thread.join()  # Wait until the spinner thread finishes
     
         print("\r✅ File saved successfully.")
 
