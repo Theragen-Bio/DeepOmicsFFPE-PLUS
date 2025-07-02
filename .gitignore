@@ -1,0 +1,17 @@
+__pycache__/
+ffpe_utils/ffpe_client/__pycache__/
+**__pycache__/
+**.pyc
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# VSCode
+.vscode/
+
+# Conda
+.env
+.venv
+*.conda
+*.ipynb_checkpoints
