@@ -1,8 +1,8 @@
-from dofp.doffpe_client import main as dofp_main
+from doffpe.doffpe_client import main as doffpe_main
 
 def main():
     # Entry point from CLI
-    dofp_main()
+    doffpe_main()
 
 if __name__ == "__main__":
     main()

@@ -96,7 +96,7 @@ def parse_args():
 	parser.add_argument('-O', '--output-dir', required=False, type=str, default="DeepOmicsFFPE", help='Name of the directory to save the output files')
 	parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
 	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
-	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.dofp path, and you won't need to provide it again.")
+	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
 	
 	return parser.parse_args()
 
@@ -138,8 +138,8 @@ def validate_api_key(api_key):
 
 	# 1. set home directory
 	home_dir = os.path.expanduser("~")
-	dofp_dir = os.path.join(home_dir, ".dofp")
-	credentials_path = os.path.join(dofp_dir, "credentials")
+	doffpe_dir = os.path.join(home_dir, ".doffpe")
+	credentials_path = os.path.join(doffpe_dir, "credentials")
 
 	credential = {}
 	if api_key == None :
@@ -164,8 +164,8 @@ def validate_api_key(api_key):
 			print(data['message'])
 			sys.exit()
 
-	# 2. create ~/.dofp folder
-	os.makedirs(dofp_dir, exist_ok=True)
+	# 2. create ~/.doffpe folder
+	os.makedirs(doffpe_dir, exist_ok=True)
 
 	# 3. create credentials file (json)
 	credentials = {"api_key": api_key}
@@ -241,7 +241,7 @@ def main() :
 
 	headers = {
 		'Authorization': 'ApiKey {0}'.format(api_key), 
-		'User-Agent': 'Dofp-Python/1.0.0'
+		'User-Agent': 'Doffpe-Python/1.0.0'
 	}
 
 	# JSON parameter
@@ -266,7 +266,7 @@ def main() :
 		'language': 'python',
 		'envType': 'conda',
 		'envPath': '/dofp-data/env/conda/miniconda3',
-		'envName': 'dofp',
+		'envName': 'doffpe',
 		'parameters': json.dumps(parameters)
 	}
 
