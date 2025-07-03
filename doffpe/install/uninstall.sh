@@ -22,6 +22,6 @@ ESCAPED_DIR=$(echo "$PARENT_DIR" | sed 's/\//\\\//g')
 
 # === Step 5: Remove DEEPOMICS FFPE PLUS PATH entries from .bashrc ===
 echo "Cleaning up .bashrc by removing doffpe PATH entries..."
-sed -i '/# Add doffpe tool path/d' $HOME/.bashrc
+sed -i '/# Add DEEPOMICS FFPE PLUS tool path/d' $HOME/.bashrc
 sed -i "/export PATH=\\\"\$PATH:$ESCAPED_DIR\\\"/d" $HOME/.bashrc
 echo "Uninstallation cleanup complete."
