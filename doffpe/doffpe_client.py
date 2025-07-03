@@ -219,7 +219,7 @@ def main() :
 	## DeepOmicsFFPE file path
 	input_expanded_vcf = f"{outdir}{prefix}.input.expanded.vcf.gz"
 	allele_file = f"{outdir}{prefix}.allele_data.pkl.gz"
-	pred_tsv = f"{outdir}test_result.tsv.gz"
+	pred_tsv = f"{outdir}{prefix}.pred.tsv.g"
 	
 	# 2. Run
 	base_dir = os.path.dirname(os.path.abspath(__file__))

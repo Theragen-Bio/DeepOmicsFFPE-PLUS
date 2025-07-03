@@ -61,7 +61,7 @@ chmod +x "$PARENT_DIR/doffpe"
 if ! grep -q "$PARENT_DIR" ~/.bashrc; then
 	echo "" >> ~/.bashrc
 	echo "# Add DEEPOMICS FFPE PLUS tool path" >> ~/.bashrc
-	echo "export PATH=\"\$PATH:$PARENT_DIR\"" >> ~/.bashrc
+	echo "export PATH=\"$PARENT_DIR:\$PATH\"" >> ~/.bashrc
 	echo "✅ 'doffpe' command has been registered. Please open a new terminal or run 'source ~/.bashrc' to apply the change."
 else
 	echo "ℹ️ The path is already registered in your .bashrc."
