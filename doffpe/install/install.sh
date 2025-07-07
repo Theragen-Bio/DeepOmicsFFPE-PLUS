@@ -62,7 +62,17 @@ if ! grep -q "$PARENT_DIR" ~/.bashrc; then
 	echo "" >> ~/.bashrc
 	echo "# Add DEEPOMICS FFPE PLUS tool path" >> ~/.bashrc
 	echo "export PATH=\"$PARENT_DIR:\$PATH\"" >> ~/.bashrc
-	echo "✅ 'doffpe' command has been registered. Please open a new terminal or run 'source ~/.bashrc' to apply the change."
+	#echo "✅ 'doffpe' command has been registered. Please open a new terminal or run 'source ~/.bashrc' to apply the change."
+	echo "✅ 'doffpe' command has been registered in .bashrc."
 else
 	echo "ℹ️ The path is already registered in your .bashrc."
 fi
+
+# Apply immediately for current shell
+if [[ ":$PATH:" != *":$PARENT_DIR:"* ]]; then
+	export PATH="$PARENT_DIR:$PATH"
+	echo "✅ 'doffpe' command is now available in the current shell session."
+else
+	echo "ℹ️ The path is already in your current PATH."
+fi
+
