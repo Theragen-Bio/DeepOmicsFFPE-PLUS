@@ -3,7 +3,7 @@
 """
 This script extracts information from a BAM file for use in DeepOmicsFFPE analysis.
 Author  : DeepOmicsFFPE Team
-Date    : 2025-05-13
+Date    : 2025-07-08
 Version : 1.0.0
 Contact : deepomics.ffpe@theragenbio.com
 License : © 2025 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
@@ -23,7 +23,8 @@ import gzip
 from tqdm import tqdm
 from ffpe_client import ext_allele
 import threading
-import pickle
+# import pickle
+import json
 import sys
 from datetime import datetime
 import traceback
@@ -238,9 +239,13 @@ if __name__ == "__main__":
         print("\r✅ Save the allele data")
         save_start_time = time.perf_counter()
 
-        ## Save the pickle file
-        with gzip.open(f"{outdir}/{prefix}.allele_data.pkl.gz", "wb") as f:
-            pickle.dump(allele_data, f, protocol=pickle.HIGHEST_PROTOCOL)
+        # ## Save the pickle file
+        # with gzip.open(f"{outdir}/{prefix}.allele_data.pkl.gz", "wb") as f:
+        #     pickle.dump(allele_data, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+        ## Save the json file
+        with gzip.open(f"{outdir}/{prefix}.allele_data.json.gz", "wt", encoding="utf-8") as f:
+            json.dump(allele_data, f, ensure_ascii=False) # indent=2
         
         end_time = time.perf_counter()
 

@@ -3,7 +3,7 @@
 """
 DeepOmicsFFPE is used to distinguish somatic variants from formalin-induced artifacts.
 Author	: DeepOmicsFFPE Team
-Date	: 2025-05-13
+Date	: 2025-07-08
 Version : 1.0.0
 Contact : deepomics.ffpe@theragenbio.com
 License : © 2025 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
@@ -218,7 +218,7 @@ def main() :
 	
 	## DeepOmicsFFPE file path
 	input_expanded_vcf = f"{outdir}{prefix}.input.expanded.vcf.gz"
-	allele_file = f"{outdir}{prefix}.allele_data.pkl.gz"
+	allele_file = f"{outdir}{prefix}.allele_data.json.gz"
 	pred_tsv = f"{outdir}{prefix}.pred.tsv.gz"
 	
 	# 2. Run
