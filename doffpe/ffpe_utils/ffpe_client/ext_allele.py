@@ -3,7 +3,7 @@
 import re
 
 class Variant:
-    max_read_length = 0
+    # max_read_length = 0 # 250710
     mapping_quality_threshold = 20
     def __init__(
             self, 
@@ -212,7 +212,7 @@ class Variant:
         tmp['pos'] = self.var_pos
         tmp['ref'] = self.ref
         tmp['alt'] = self.alt 
-        tmp['max_read_length'] = Variant.max_read_length
+        # tmp['max_read_length'] = Variant.max_read_length # 250710
         tmp['dp'] = self.dp
         tmp['ad_ref'] = len(set([name for name in self.ref_qname if name not in self.ambigous_qname]))
         tmp['ad_alt'] = len(set([name for name in self.alt_qname if name not in self.ambigous_qname]))
@@ -245,8 +245,8 @@ class Variant:
                 continue
             else:
                 supporting_allele = self._ref_alt_other_support(read)
-                if Variant.max_read_length < len(read.query_alignment_sequence):
-                    Variant.max_read_length = len(read.query_alignment_sequence)
+                # if Variant.max_read_length < len(read.query_alignment_sequence): # 250710
+                    # Variant.max_read_length = len(read.query_alignment_sequence) # 250710
             
             if supporting_allele == 0: # support ref allele
                 if read.qname in self.alt_qname or read.qname in self.other_qname:

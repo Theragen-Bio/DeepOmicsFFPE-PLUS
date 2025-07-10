@@ -3,7 +3,7 @@
 """
 This script extracts information from a BAM file for use in DeepOmicsFFPE analysis.
 Author  : DeepOmicsFFPE Team
-Date    : 2025-07-08
+Date    : 2025-07-10
 Version : 1.0.0
 Contact : deepomics.ffpe@theragenbio.com
 License : © 2025 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
@@ -23,7 +23,6 @@ import gzip
 from tqdm import tqdm
 from ffpe_client import ext_allele
 import threading
-# import pickle
 import json
 import sys
 from datetime import datetime
@@ -51,7 +50,6 @@ def parse_args():
     parser.add_argument('-O', '--output-dir', required=False, type=str, default='DeepOmicsFFPE', help='Name of the directory to save the output files')
     parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
 
-    # parser.add_argument('--predict-only-passed-calls', required=True, choices=['True', "False"], default='True', help='If True, process only PASS variants; otherwise, process all.')
     parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
 
     return parser.parse_args()
@@ -181,8 +179,6 @@ if __name__ == "__main__":
                 "However, please note that we do not recommend analyzing variants that have not passed standard quality filters, as this may affect data reliability.\n"
             )
         
-        # vcf_df_nonpass = vcf_df[vcf_df['filter'] != 'PASS'].copy()
-        # vcf_df['to_analyze'] = (vcf_df['FILTER'] == 'PASS').astype(int)
         vcf_df = vcf_df[vcf_df['filter'] == 'PASS'].copy()
         print(f"Processing {len(vcf_df)} PASS variants only.")
 
@@ -208,21 +204,10 @@ if __name__ == "__main__":
     # 4. Extract raw read data from bam # multi-processing
     start_time = time.perf_counter()
 
-    ## Display processing status in the CLI
-	#stop_event = threading.Event()
-	#spinner_thread = threading.Thread(target=show_saving_spinner, args=(stop_event,))
-	#spinner_thread.start()
-
     try:
         with concurrent.futures.ProcessPoolExecutor(max_workers=num_worker) as executor:
             result = executor.map(extract_allele_depth_wrapper, args_list)
             allele_data = list(chain(*tqdm(result, total=len(args_list), desc="✅ Extracting data from BAM file")))
-
-        # with concurrent.futures.ProcessPoolExecutor(max_workers=num_worker) as executor:
-        #     result = executor.map(extract_allele_depth_wrapper, args_list)
-        #     result = list(result)  # 여기서 모든 작업이 끝날 때까지 대기
-        #     allele_data = list(chain(*tqdm(result, total=len(args_list), desc="✅ Extracting data from BAM file")))
-
         
         ## Check the results
         print(f"\n✅ Total allele records: {len(allele_data):,}")
@@ -239,10 +224,6 @@ if __name__ == "__main__":
         print("\r✅ Save the allele data")
         save_start_time = time.perf_counter()
 
-        # ## Save the pickle file
-        # with gzip.open(f"{outdir}/{prefix}.allele_data.pkl.gz", "wb") as f:
-        #     pickle.dump(allele_data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
         ## Save the json file
         with gzip.open(f"{outdir}/{prefix}.allele_data.json.gz", "wt", encoding="utf-8") as f:
             json.dump(allele_data, f, ensure_ascii=False) # indent=2
@@ -254,10 +235,7 @@ if __name__ == "__main__":
         traceback.print_exc()
         sys.exit(1)
 
-    finally:
-		#stop_event.set()  # Signal that the task is complete
-		#spinner_thread.join()  # Wait until the spinner thread finishes
-    
+    finally:    
         print("\r✅ File saved successfully.")
 
         # Complete
