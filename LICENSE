@@ -1,29 +1,20 @@
-End-User License Agreement (EULA)
+Copyright (c) 2025 Theragen Bio Co., Ltd.
 
-This End-User License Agreement ("Agreement") is a legal agreement between you and Theragen Bio.
+Subject to the terms and conditions set forth below, permission is hereby granted, free of charge, to any individual or entity obtaining a copy of this software and associated documentation files (the “Software”) from the official repository located at https://github.com/theragenbio/deepomics-ffpe, to download, install, and internally review the Software solely for evaluation purposes:
 
-By installing or using this software ("doffpe"), you agree to be bound by the terms of this Agreement.
+1. The Software is a proprietary commercial product and is not open source. Access to or use of the Software requires a valid API key, which must be obtained through authorized registration and purchase at https://deepomics-ffpe.theragenbio.com. Use of the Software without a valid API key is strictly prohibited.
 
-1. LICENSE GRANT
-Theragen Bio hereby grants you a non-exclusive, non-transferable license to use the software solely for internal purposes.
+2. Licensed users, whether individuals or legal entities, are authorized to use the Software solely within the scope expressly granted by their license. Any unauthorized use of the Software—including, but not limited to, redistribution, sublicensing, incorporation into other products or services, or provision of access to third parties—is strictly prohibited, regardless of whether such use is for commercial or non-commercial purposes.
 
-2. RESTRICTIONS
-You may not:
-- Distribute, sell, sublicense, or otherwise transfer the software;
-- Modify, reverse-engineer, decompile, or disassemble the software;
-- Use the software for commercial purposes without prior written consent from Theragen Bio.
+3. Redistribution, sublicensing, public sharing, or publication of the Software, in whole or in part, whether in its original form or modified, is strictly prohibited without the express prior written consent of the copyright holder.
 
-3. INTELLECTUAL PROPERTY
-All rights, title, and interest in and to the software remain with Theragen Bio.
+4. The use of the Software in combination with other software tools or pipelines for the purpose of resale, redistribution, or provision of bundled services to third parties shall require prior written authorization from the copyright owner.
 
-4. NO WARRANTY
-This software is provided "as-is" without any warranty. Theragen Bio shall not be liable for any damages arising from the use of the software.
+5. The above copyright notice and this permission notice must be included in all copies or substantial portions of the Software retained for internal review purposes.
 
-5. TERMINATION
-This license is effective until terminated. It will terminate automatically if you fail to comply with any term of this Agreement.
+6. THE SOFTWARE IS PROVIDED "AS IS" TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIMS, DAMAGES, OR OTHER LIABILITIES ARISING OUT OF OR IN CONNECTION WITH THE USE OF, OR INABILITY TO USE, THE SOFTWARE. THIS LIMITATION OF LIABILITY SHALL NOT APPLY TO DAMAGES RESULTING FROM WILLFUL MISCONDUCT OR GROSS NEGLIGENCE BY THE AUTHORS OR COPYRIGHT HOLDERS.
 
-6. GOVERNING LAW
-This Agreement shall be governed by the laws of the Republic of Korea.
+Any use of the Software outside the scope expressly permitted herein shall constitute unauthorized use and shall result in the immediate termination of all rights granted under this license.
 
-(c) 2025 Theragen Bio. All rights reserved.
-
+For licensing inquiries or commercial use requests, please contact:
+📧 deepomics.ffpe@theragenbio.com
