@@ -22,6 +22,7 @@ import traceback
 import requests
 import json
 import copy
+import hashlib
 
 # API endpoint URL
 base_url = "https://deepomics-ffpe.theragenbio.com/api/v1"
@@ -77,6 +78,19 @@ tz_map = {
 local_tz_abbr = time.tzname[0]
 # Map abbreviation to IANA time zone name
 timezone_str = tz_map.get(local_tz_abbr, 'UTC')  # fallback to UTC if not mapped
+
+
+def get_md5hash(sFile) :
+	sMd5_hash = ""
+	sFile_size = os.path.getsize(sFile)
+	with open(sFile, 'rb') as f:
+		file_data = f.read()
+		sMd5_hash = hashlib.md5(file_data).hexdigest()
+		# delete data explicitly for free memory
+		del file_data
+
+	return sMd5_hash, sFile_size
+
 
 def parse_args():
 	parser = argparse.ArgumentParser(
@@ -239,6 +253,9 @@ def main() :
 		traceback.print_exc()
 		sys.exit(1) # error
 
+	# md5sum hash
+	md5_hash, allele_file_size = get_md5hash(allele_file)
+
 	headers = {
 		'Authorization': 'ApiKey {0}'.format(api_key), 
 		'User-Agent': 'Doffpe-Python/1.0.0'
@@ -251,10 +268,12 @@ def main() :
 		"ref-version": f"{ref_ver}",
 		"seq-type": f"{seq_type}",
 		"output-prefix": f"{prefix}",
-		"output-dir": f"{outdir}",
+		"output-dir-client": f"{outdir}",
 		"threads": num_proc,
 		"process-all-variants": f"{process_all_variants}", 
-		"variant-read-counts": os.path.basename(allele_file)
+		"variant-read-counts": os.path.basename(allele_file), 
+		"variant-read-counts-md5sum": md5_hash, 
+		"variant-read-counts-size": allele_file_size
 	}
 
 	files = {
@@ -309,17 +328,43 @@ def main() :
 
 	resp.close()
 
-	url_download = f"{analysis_url}/{data['seq']}/result/download"
+	md5_hash_valid = False
+	nRetry = 0
+	while md5_hash_valid == False and nRetry < 5 :
+		url_download = f"{analysis_url}/{data['seq']}/result/download"
 
-	# GET intermediate output
-	resp = requests.get(url_download, headers=headers)
-	resp.raise_for_status()
+		# GET intermediate output
+		resp = requests.get(url_download, headers=headers)
+		resp.raise_for_status()
 
-	# save intermediate output
-	with open(pred_tsv, "wb") as f:
-		f.write(resp.content)
+		# save intermediate output
+		with open(pred_tsv, "wb") as f:
+			f.write(resp.content)
 
-	print(f"Complete file download : {pred_tsv}")
+		print(f"Complete file download : {pred_tsv}")
+
+		# md5sum check
+		pred_tsv_md5_hash, pred_tsv_size = get_md5hash(pred_tsv)
+		url_md5_get = f"{analysis_url}/{data['seq']}/md5"
+		response = requests.get(url_md5_get, headers=headers)
+		md5_get_data = response.json()
+		print("md5 response", response)
+		if md5_get_data['serverMd5sum'] == pred_tsv_md5_hash : 
+			md5_hash_valid = True
+			break
+
+		nRetry += 1
+		time.sleep(5)
+	
+	url_md5_post = f"{analysis_url}/md5"
+	md5_post_data = {
+		"seq": md5_get_data['seq'],
+		"analysisSeq": md5_get_data['analysisSeq'],
+		"clientFilePath": pred_tsv,
+		"clientMd5sum": pred_tsv_md5_hash
+	}
+	response = requests.post(url_md5_post, json=md5_post_data, headers=headers)
+	print("md5 update response", response)
 
 	# post analysis for client-side
 	try:
