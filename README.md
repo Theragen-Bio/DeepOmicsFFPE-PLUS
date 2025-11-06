@@ -46,9 +46,11 @@ By dramatically improving the precision of variant detection, DEEPOMICS FFPE ove
 
 - When you sign up, you’ll get up to 5 free analysis runs to try out the service.
 
-![Free trial 1](images/free_trial_1.png)
-
-![Free trial 2](images/free_trial_2.png)
+<p align="center">
+  <img src="images/free_trial_1.png" alt="Free trial 1" width="50%">
+  <br>
+  <img src="images/free_trial_2.png" alt="Free trial 2" width="50%">
+</p>
 
 # 3. Getting Your API Key
 
