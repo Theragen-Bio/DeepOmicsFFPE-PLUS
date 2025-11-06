@@ -117,8 +117,7 @@ doffpe -v <input.vcf> \
 		   -s <sequencing_type> \
 		   -o <prefix> \
 		   -O <output_dir> \
-		   -t <threads> \
-		   --api-key <your_api_key>
+		   -t <threads>
 ```
 
 ### 3.2.1. Key Options Explained
@@ -132,7 +131,6 @@ doffpe -v <input.vcf> \
 | `-o` , `--output-prefix` | True | - | String | Prefix to be used for output file names |
 | `-O` , `--output-dir` | False | DeepOmicsFFPE | String | Name of the directory to save the output files |
 | `-t` , `--threads`  | False | All threads | Integer | Use multithreading with <int> worker threads |
-| `--api-key` | True | - | String | To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.dofp path, and you won't need to provide it again. |
 | `--process-all-variants`  | False | - | - | If specified, include all variants regardless of FILTER status.
 ⚠️The use of this option is not recommended. It is strongly advised to analyze only variants with `FILTER==PASS`, as these represent high-confidence calls that are supported by the somatic variant caller. |
 
@@ -140,7 +138,7 @@ doffpe -v <input.vcf> \
 
 ```bash
 ## Quick Start ## Test data
-doffpe -v test/test.mutect2.filt.pass.vcf.gz -b test/test.mutect2.bam -r hg19 -s wes -o test -O DeepOmicsFFPE -t 8 --api-key <your_api_key>
+doffpe -v test/test.mutect2.filt.pass.vcf.gz -b test/test.mutect2.bam -r hg19 -s wes -o test -O DeepOmicsFFPE -t 8
 ```
 
 # 4. Output Files
