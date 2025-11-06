@@ -149,20 +149,12 @@ chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 # 5. Installing the CLI
 
 ## 5.1. Installation
+### 5.1.1. Sign-up and sign-in
+#### https://deepomics-ffpe.theragenbio.com/
 
-```bash
-## 이 파트는 종환 대리님과 함께 작성 예정
-## github에 repository 만들어서 설치 파일 업로드 및 관리할 것으로 생각되는데, 시스템팀과 종환 대리님이 직접 소통 예정
-```
-
-### **5.1.1. Option 1 - Install via `Conda`  (Recommended)**
-
-### **5.1.2. Option 2 - Install via `pip`**
-
-### 5.1.3. System Requirements
-
-- Python 3.8 or higher
-- Linux or macOS (Windows not officially supported)
+### 5.1.2. Visit the page below
+#### https://deepomics-ffpe.theragenbio.com/client-download
+### <br/>
 
 ## 5.2. Running an Analysis
 
