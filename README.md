@@ -103,11 +103,20 @@ chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 # 3. Installing the CLI
 
 ## 3.1. Installation
-### 3.1.1. Sign-up and sign-in
-- https://deepomics-ffpe.theragenbio.com/
+### 3.1.1. Install via install script (Linux) (recommended)
+```
+cd doffpe/install/
+/bin/bash install.sh
+```
 
-### 3.1.2. Visit the page below
-- https://deepomics-ffpe.theragenbio.com/client-download
+### 3.1.2. Install using docker
+```
+# pull image
+docker pull theragenbi/doffpe:1.0.0
+
+# run docker container
+docker run -it -v /your/local/path:/data theragenbi/doffpe:1.0.0 /bin/bash
+```
 
 ### <br/>
 
