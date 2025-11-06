@@ -41,59 +41,9 @@ By dramatically improving the precision of variant detection, DEEPOMICS FFPE ove
 
 </aside>
 
-# 2. Trial Access
-### 🧪 Notice : Beta service is now available. You can use it for free.
+# 2. Preparing Your Analysis Data
 
-- When you sign up, you’ll get up to 5 free analysis runs to try out the service.
-
-<div align="center">
-  <img src="images/free_trial_1.png" alt="Free trial 1" width="50%">
-  <br>
-  <img src="images/free_trial_2.png" alt="Free trial 2" width="50%">
-</div>
-
-# 3. Getting Your API Key
-
-<aside>
-🔐
-
-**The API Key is your personal access key for DEEPOMICS FFPE analyses.**
-
-You’ll need this key to submit analysis requests. It helps us identify your requests and make sure everything runs smoothly.
-
-**Important:** Your usage and billing are linked to this API Key, so please keep track of how your keys are used.
-
-**⚠️ Keep your key safe!**
-
-If someone else gets access to your API Key, they could run analyses on your behalf and generate charges. In such cases, you’ll be responsible for any costs incurred.
-
-</aside>
-
-## 3.1. How to Create an API Key
-
-- Go to the [🔗Create API Key page](http://dofp-service.ptbio.kr/api/key/create).
-    - You can also find it in your user page: [API Key] > [Create].
-- Fill in the details and click [Create].
-    - **API Key Name:** Choose a name that helps you easily identify the key’s purpose.
-    - **API Key Description:** Optionally, add more details about the key.
-    - **API Key Expire Date:** Set how long the key should stay active (e.g. `1 Day`, `1 Year`, or `Never Expired`).
-- After creating, click [Go to Detail] to view your new API Key.
-    
-    ⚠️ **Note:** For security reasons, your API Key will only be shown once right after it’s created. Make sure to copy and save it in a secure place.
-    If you lose it, no worries — you can simply delete the old key and create a new one.
-    
-<div align="center">
-  <img src="images/create_api_key.png" alt="Create API key" width="80%">
-</div>
-
-## 3.2. Managing and Deleting API Keys
-
-- You can manage your API Keys anytime on the [🔗API List page](http://dofp-service.ptbio.kr/api/key/list).
-- Here, you can deactivate or delete keys as needed.
-
-# 4. Preparing Your Analysis Data
-
-## 4.1. Input Files
+## 2.1. Input Files
 
 To run DEEPOMICS FFPE analysis, you’ll need to prepare the following 3 files:
 
@@ -105,7 +55,7 @@ To run DEEPOMICS FFPE analysis, you’ll need to prepare the following 3 files:
 - The VCF and BAM files must come from the **same sample**.
 - Special characters, spaces, or non-English characters (e.g. Korean) are not allowed in file names.
 
-### 4.1.1. VCF File
+### 2.1.1. VCF File
 
 - **File format**: Uncompressed (`.vcf`) or bgzip-compressed (`.vcf.gz`) VCF files
 - **Required fields**:
@@ -138,7 +88,7 @@ chr2	50000	rs67890	G	A,T	80	LowQual	DP=80;AF=0.2,0.1	GT	1/2
 chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 ```
 
-### 4.1.2. BAM File
+### 2.1.2. BAM File
 
 - **Alignment**: BAM file aligned to the reference genome
 - **Index file**: The corresponding `.bai` file is required
@@ -146,17 +96,17 @@ chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 - The BAM file **must be sorted by chromosome coordinates**.
 - It’s also highly recommended that you perform **duplicate marking or removal and base quality score recalibration (BQSR)** before submitting the BAM file.
 
-# 5. Installing the CLI
+# 3. Installing the CLI
 
-## 5.1. Installation
-### 5.1.1. Sign-up and sign-in
+## 3.1. Installation
+### 3.1.1. Sign-up and sign-in
 - https://deepomics-ffpe.theragenbio.com/
 
-### 5.1.2. Visit the page below
+### 3.1.2. Visit the page below
 - https://deepomics-ffpe.theragenbio.com/client-download
 ### <br/>
 
-## 5.2. Running an Analysis
+## 3.2. Running an Analysis
 
 - Here’s an example of how to run an analysis using the CLI:
 
@@ -171,7 +121,7 @@ doffpe -v <input.vcf> \
 		   --api-key <your_api_key>
 ```
 
-### 5.2.1. Key Options Explained
+### 3.2.1. Key Options Explained
 
 | Options | Required | Default | Value | Description |
 | --- | --- | --- | --- | --- |
@@ -186,16 +136,16 @@ doffpe -v <input.vcf> \
 | `--process-all-variants`  | False | - | - | If specified, include all variants regardless of FILTER status.
 ⚠️The use of this option is not recommended. It is strongly advised to analyze only variants with `FILTER==PASS`, as these represent high-confidence calls that are supported by the somatic variant caller. |
 
-### 5.2.2. Quick Start
+### 3.2.2. Quick Start
 
 ```bash
 ## Quick Start ## Test data
 doffpe -v test/test.mutect2.filt.pass.vcf.gz -b test/test.mutect2.bam -r hg19 -s wes -o test -O DeepOmicsFFPE -t 8 --api-key <your_api_key>
 ```
 
-# 6. Output Files
+# 4. Output Files
 
-## 6.1. Result Files
+## 4.1. Result Files
 
 | File name | Description |
 | --- | --- |
@@ -225,4 +175,4 @@ chr2	50000	rs67890	G	A,T	80	LowQual	DP=80;AF=0.2,0.1;DeepOmicsFFPE_score=.;IS_VA
 chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7;DeepOmicsFFPE_score=0.846;IS_VARIANT=1	GT	1/1
 ```
 
-# 7. FAQ
+# 5. FAQ
