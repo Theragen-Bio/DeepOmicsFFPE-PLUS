@@ -180,4 +180,6 @@ chr2	50000	rs67890	G	A,T	80	LowQual	DP=80;AF=0.2,0.1;DeepOmicsFFPE_score=.;IS_VA
 chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7;DeepOmicsFFPE_score=0.846;IS_VARIANT=1	GT	1/1
 ```
 
+### <br/><br/>
+
 # 5. FAQ
