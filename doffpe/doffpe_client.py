@@ -185,6 +185,7 @@ def validate_api_key(api_key):
 
 	# 3. create credentials file (json)
 	credentials = {"api_key": api_key}
+	print("credentials", credentials)
 	with open(credentials_path, "w") as f:
 		json.dump(credentials, f, indent=4)
 		print(f"✅ API key saved to {credentials_path}")
