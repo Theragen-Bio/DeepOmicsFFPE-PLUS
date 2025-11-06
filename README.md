@@ -1,7 +1,7 @@
 # DEEPOMICS FFPE User Guide - ENG
 
-Version: 0.0.2
-Update date: 2025.06.17
+Version: 0.3.0
+Update date: 2025.11.06
 
 ---
 
@@ -42,6 +42,7 @@ By dramatically improving the precision of variant detection, DEEPOMICS FFPE ove
 </aside>
 
 # 2. Trial Access
+### 🧪 Notice : Beta service is now available. You can use it for free.
 
 - When you sign up, you’ll get up to 5 free analysis runs to try out the service.
 
