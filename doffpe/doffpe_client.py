@@ -93,6 +93,8 @@ def get_md5hash(sFile) :
 
 
 def parse_args():
+	sApi_key_beta = "lVv5Nj0QDBm53_lJdCc8nhhciKW0GdFF"
+
 	parser = argparse.ArgumentParser(
 		prog='doffpe',
 		description='\n'
@@ -110,7 +112,7 @@ def parse_args():
 	parser.add_argument('-O', '--output-dir', required=False, type=str, default="DeepOmicsFFPE", help='Name of the directory to save the output files')
 	parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
 	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
-	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
+	parser.add_argument('--api-key', required=False, default = sApi_key_beta, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
 	
 	return parser.parse_args()
 
