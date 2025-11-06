@@ -41,6 +41,8 @@ By dramatically improving the precision of variant detection, DEEPOMICS FFPE ove
 
 </aside>
 
+### <br/><br/>
+
 # 2. Preparing Your Analysis Data
 
 ## 2.1. Input Files
@@ -96,6 +98,8 @@ chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 - The BAM file **must be sorted by chromosome coordinates**.
 - It’s also highly recommended that you perform **duplicate marking or removal and base quality score recalibration (BQSR)** before submitting the BAM file.
 
+### <br/><br/>
+
 # 3. Installing the CLI
 
 ## 3.1. Installation
@@ -104,6 +108,7 @@ chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 
 ### 3.1.2. Visit the page below
 - https://deepomics-ffpe.theragenbio.com/client-download
+
 ### <br/>
 
 ## 3.2. Running an Analysis
@@ -140,6 +145,8 @@ doffpe -v <input.vcf> \
 ## Quick Start ## Test data
 doffpe -v test/test.mutect2.filt.pass.vcf.gz -b test/test.mutect2.bam -r hg19 -s wes -o test -O DeepOmicsFFPE -t 8
 ```
+
+### <br/><br/>
 
 # 4. Output Files
 
