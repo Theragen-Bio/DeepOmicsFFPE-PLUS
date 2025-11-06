@@ -112,10 +112,10 @@ cd doffpe/install/
 ### 3.1.2. Install using docker
 ```
 # pull image
-docker pull theragenbi/doffpe:1.0.0
+docker pull theragenbi/deepomics-ffpe:1.0.0
 
 # run docker container
-docker run -it -v /your/local/path:/data theragenbi/doffpe:1.0.0 /bin/bash
+docker run -it -v /your/local/path:/data theragenbi/deepomics-ffpe:1.0.0 /bin/bash
 ```
 
 ### <br/>
