@@ -82,12 +82,9 @@ If someone else gets access to your API Key, they could run analyses on your beh
     ⚠️ **Note:** For security reasons, your API Key will only be shown once right after it’s created. Make sure to copy and save it in a secure place.
     If you lose it, no worries — you can simply delete the old key and create a new one.
     
-
-![image.png](DEEPOMICS%20FFPE%20User%20Guide%20-%20ENG%202142a9bc0c458068aa94c80227949c2e/image%202.png)
-
-![image.png](DEEPOMICS%20FFPE%20User%20Guide%20-%20ENG%202142a9bc0c458068aa94c80227949c2e/image%203.png)
-
-![image.png](DEEPOMICS%20FFPE%20User%20Guide%20-%20ENG%202142a9bc0c458068aa94c80227949c2e/image%204.png)
+<div align="center">
+  <img src="images/create_api_key.png" alt="Create API key" width="80%">
+</div>
 
 ## 3.2. Managing and Deleting API Keys
 
