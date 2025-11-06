@@ -3,8 +3,8 @@
 """
 DeepOmicsFFPE is used to distinguish somatic variants from formalin-induced artifacts.
 Author	: DeepOmicsFFPE Team
-Date	: 2025-07-08
-Version : 1.0.0
+Date	: 2025-11-06
+Version : 0.3.0
 Contact : deepomics.ffpe@theragenbio.com
 License : © 2025 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
 """
@@ -23,6 +23,15 @@ import requests
 import json
 import copy
 import hashlib
+
+if __name__ == "__main__" and (__package__ is None or __package__ == ""):
+	import os, sys
+	sHere = os.path.abspath(os.path.dirname(__file__))
+	sParent = os.path.dirname(sHere)
+	if sParent not in sys.path:
+		sys.path.insert(0, sParent)
+	__package__ = "doffpe"
+from . import __version__ 
 
 # API endpoint URL
 base_url = "https://deepomics-ffpe.theragenbio.com/api/v1"
@@ -93,8 +102,6 @@ def get_md5hash(sFile) :
 
 
 def parse_args():
-	sApi_key_beta = "lVv5Nj0QDBm53_lJdCc8nhhciKW0GdFF"
-
 	parser = argparse.ArgumentParser(
 		prog='doffpe',
 		description='\n'
@@ -104,6 +111,7 @@ def parse_args():
 		formatter_class=argparse.RawDescriptionHelpFormatter
 	)
 
+	parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
 	parser.add_argument('-v', '--variant-file', required=True, type=Path, help='Input variants file path')
 	parser.add_argument('-b', '--bam-file', required=True, type=Path, help='Input BAM file path')
 	parser.add_argument('-r', '--ref-version', required=True, choices=['hg19', 'hg38'], help='Reference genome version: hg19 or hg38')
@@ -112,7 +120,7 @@ def parse_args():
 	parser.add_argument('-O', '--output-dir', required=False, type=str, default="DeepOmicsFFPE", help='Name of the directory to save the output files')
 	parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
 	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
-	parser.add_argument('--api-key', required=False, default = sApi_key_beta, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
+	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
 	
 	return parser.parse_args()
 
@@ -194,6 +202,8 @@ def validate_api_key(api_key):
 
 
 def main() : 
+	sApi_key_beta = "lVv5Nj0QDBm53_lJdCc8nhhciKW0GdFF"
+
 	args = parse_args()
 	input_vcf = args.variant_file
 	input_bam = args.bam_file
@@ -204,6 +214,7 @@ def main() :
 	num_proc = args.threads
 	process_all_variants = args.process_all_variants
 	api_key = args.api_key
+	api_key = sApi_key_beta		# for beta
 	
 	if outdir is None:
 		outdir = os.path.abspath(os.getcwd()) + "/"
@@ -276,7 +287,8 @@ def main() :
 		"process-all-variants": f"{process_all_variants}", 
 		"variant-read-counts": os.path.basename(allele_file), 
 		"variant-read-counts-md5sum": md5_hash, 
-		"variant-read-counts-size": allele_file_size
+		"variant-read-counts-size": allele_file_size, 
+		"client-script-version": __version__
 	}
 
 	files = {
