@@ -49,7 +49,7 @@ To run DEEPOMICS FFPE analysis, you’ll need to prepare the following 3 files:
 
 |  | Extension | Description |
 | --- | --- | --- |
-| VCF file | `.vcf` 또는 `.vcf.gz` | Variant Call Format file containing variant information |
+| VCF file | `.vcf` OR `.vcf.gz` | Variant Call Format file containing variant information |
 | BAM file | `.bam` | Binary Alignment Map file containing aligned sequencing reads |
 | BAM index file | `.bai` | Index file for the BAM file |
 - The VCF and BAM files must come from the **same sample**.
