@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "doffpe"
-version = "0.3.0-rc4"
+version = "0.3.0-rc5"
 description = "DEEPOMICS FFPE PLUS is a deep learning-based pipeline designed to remove FFPE artifacts and retain true somatic variants for client data analysis"
 authors = [
   { name="Theragen Bio", email="deepomics.ffpe@theragenbio.com" }
