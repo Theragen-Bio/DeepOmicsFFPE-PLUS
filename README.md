@@ -150,10 +150,10 @@ chr3	15000	.	AG	A	60	PASS	DP=100;AF=0.7	GT	1/1
 
 ## 5.1. Installation
 ### 5.1.1. Sign-up and sign-in
-#### https://deepomics-ffpe.theragenbio.com/
+- https://deepomics-ffpe.theragenbio.com/
 
 ### 5.1.2. Visit the page below
-#### https://deepomics-ffpe.theragenbio.com/client-download
+- https://deepomics-ffpe.theragenbio.com/client-download
 ### <br/>
 
 ## 5.2. Running an Analysis
