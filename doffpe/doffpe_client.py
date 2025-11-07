@@ -287,8 +287,7 @@ def main() :
 		"process-all-variants": f"{process_all_variants}", 
 		"variant-read-counts": os.path.basename(allele_file), 
 		"variant-read-counts-md5sum": md5_hash, 
-		"variant-read-counts-size": allele_file_size, 
-		"client-script-version": __version__
+		"variant-read-counts-size": allele_file_size
 	}
 
 	files = {
@@ -301,7 +300,8 @@ def main() :
 		'envType': 'conda',
 		'envPath': '/dofp-data/env/conda/miniconda3',
 		'envName': 'doffpe',
-		'parameters': json.dumps(parameters)
+		'parameters': json.dumps(parameters), 
+		'client_script_version': __version__
 	}
 
 	# request analysis api
