@@ -10,6 +10,7 @@ License : © 2025 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
 """
 
 import os
+import re
 import time
 import argparse
 from pathlib import Path
@@ -49,6 +50,7 @@ def parse_args():
     parser.add_argument('-o', '--output-prefix', required=True, type=str, help='Prefix to be used for output file names')
     parser.add_argument('-O', '--output-dir', required=False, type=str, default='DeepOmicsFFPE', help='Name of the directory to save the output files')
     parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
+    parser.add_argument('--ref-fasta', required=True, type=Path, help='Reference FASTA file path (must match --ref-version, index .fai required)')
 
     parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
 
@@ -81,6 +83,39 @@ def read_file(path, input_type='vcf.gz'):
     
     return df[required_cols]
 
+def get_context(ref, chrom, pos, length=10):
+    """Extract sequence context around a variant position.
+
+    Parameters
+    ----------
+    ref    : pysam.FastaFile
+    chrom  : str  (e.g. "chr1")
+    pos    : int  (1-based VCF position)
+    length : int  (flanking bases on each side, default=10 → 21bp total)
+
+    Returns
+    -------
+    str: 21-character sequence context (non-ATGC replaced with 'X')
+    """
+    # Convert to 0-based half-open interval
+    start = pos - 1 - length  # may be negative near chromosome start
+    end   = pos + length       # exclusive end
+
+    chrom_len = ref.get_reference_length(chrom)
+
+    pad_left    = max(0, -start)
+    pad_right   = max(0, end - chrom_len)
+    fetch_start = max(0, start)
+    fetch_end   = min(chrom_len, end)
+
+    seq = ref.fetch(chrom, fetch_start, fetch_end)
+    seq = re.sub(r'[^ATGCatgc]', 'X', seq).upper()
+    seq = 'X' * pad_left + seq + 'X' * pad_right
+
+    assert len(seq) == 21, f"seq_context length error: got {len(seq)}, {chrom}:{pos}"
+    return seq
+
+
 def extract_allele_depth(df_chunk, bam_path):
     bam = pysam.AlignmentFile(bam_path)
     results = []
@@ -111,6 +146,7 @@ if __name__ == "__main__":
     prefix = args.output_prefix
     outdir = args.output_dir
     num_proc = args.threads
+    ref_fasta = args.ref_fasta
     process_all_variants = args.process_all_variants
 
     # START
@@ -217,9 +253,17 @@ if __name__ == "__main__":
         if vnum_bef != vnum_aft:
             sys.stderr.write(f"[ERROR_105] Data PreProcessing step failed. Variant count mismatch: before={vnum_bef}, after={vnum_aft}\n")
             sys.exit(1)
-        
+
         after_bam_time = time.perf_counter()
-        
+
+        # 4-1. Extract sequence context from reference FASTA (main process, after parallel BAM extraction)
+        print(f"\n✅ Extracting sequence context from reference: {ref_fasta}")
+        ref = pysam.FastaFile(str(ref_fasta))
+        for record in allele_data:
+            record['seq_context'] = get_context(ref, record['chrom'], record['pos'])
+        ref.close()
+        print(f"\r✅ Sequence context extraction complete.")
+
         # 5. Save the allele data
         print("\r✅ Save the allele data")
         save_start_time = time.perf_counter()

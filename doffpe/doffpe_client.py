@@ -37,8 +37,6 @@ from . import __version__
 base_url = "https://deepomics-ffpe.theragenbio.com/api/v1"
 analysis_url = f"{base_url}/analysis"
 api_key_check_url = f"{base_url}/apikeys/check"
-print(os.path.abspath(__file__))
-
 tz_map = {
 	# Asia
 	'KST': 'Asia/Seoul',
@@ -119,6 +117,7 @@ def parse_args():
 	parser.add_argument('-o', '--output-prefix', required=True, type=str, help='Prefix to be used for output file names')
 	parser.add_argument('-O', '--output-dir', required=False, type=str, default="DeepOmicsFFPE", help='Name of the directory to save the output files')
 	parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
+	parser.add_argument('--ref-fasta', required=True, type=Path, help='Reference FASTA file path (must match --ref-version, index .fai required)')
 	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
 	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
 	
@@ -181,10 +180,8 @@ def validate_api_key(api_key):
 			sys.exit()
 	else : 
 		response = requests.get(api_key_check_url, headers=headers)
-		print("validate_api_key response.text", response.text)
 		data = response.json()
-		print("data", data)
-		if data['isValid'] == False : 
+		if data['isValid'] == False :
 			print(data['message'])
 			sys.exit()
 
@@ -193,7 +190,6 @@ def validate_api_key(api_key):
 
 	# 3. create credentials file (json)
 	credentials = {"api_key": api_key}
-	print("credentials", credentials)
 	with open(credentials_path, "w") as f:
 		json.dump(credentials, f, indent=4)
 		print(f"✅ API key saved to {credentials_path}")
@@ -212,6 +208,7 @@ def main() :
 	prefix = args.output_prefix
 	outdir = args.output_dir
 	num_proc = args.threads
+	ref_fasta = args.ref_fasta
 	process_all_variants = args.process_all_variants
 	api_key = args.api_key
 	api_key = sApi_key_beta		# for beta
@@ -253,12 +250,12 @@ def main() :
 	base_dir = os.path.dirname(os.path.abspath(__file__))
 	script_dir = os.path.join(base_dir, "ffpe_utils")
 	
-	cmd_01 = ["python", f"{script_dir}/01_ext_bam.py", "-v", input_vcf, "-b", input_bam, "-r", ref_ver, "-s", seq_type, "-o", prefix, "-O", outdir, "-t", str(num_proc)]
+	cmd_01 = ["python", f"{script_dir}/01_ext_bam.py", "-v", input_vcf, "-b", input_bam, "-r", ref_ver, "-s", seq_type, "-o", prefix, "-O", outdir, "-t", str(num_proc), "--ref-fasta", str(ref_fasta)]
 	cmd_04 = ["python", f"{script_dir}/04_fin.py", "-ev", input_expanded_vcf, "-o", prefix, "-O", outdir, "-p", pred_tsv]
 
 	if process_all_variants:
-		cmd_01 = cmd_01.append("--process-all-variants")
-		cmd_04 = cmd_04.append("--process-all-variants")
+		cmd_01.append("--process-all-variants")
+		cmd_04.append("--process-all-variants")
 
 	try:
 		subprocess.run(cmd_01, check=True)
