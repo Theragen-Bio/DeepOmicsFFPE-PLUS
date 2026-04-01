@@ -76,7 +76,7 @@ if __name__ == "__main__":
     cmd_fin_vcf = ["bash", f"{script_dir}/ffpe_client/fin_vcf.sh", "-ev", input_expanded_vcf, "-p", pred_tsv, "-o", prefix, "-O", outdir]
 
     if process_all_variants:
-        cmd_fin_vcf = cmd_fin_vcf.append("--process-all-variants")
+        cmd_fin_vcf.append("--process-all-variants")
 
     try:
         subprocess.run(cmd_fin_vcf, check=True)

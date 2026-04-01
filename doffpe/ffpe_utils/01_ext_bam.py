@@ -39,18 +39,17 @@ def parse_args():
         description='\n'
                     'about: Extract features for DeepOmicsFFPE pipeline.\n'
                     '       This tool parses VCF/TSV/CSV files and BAM to produce input-ready features.\n\n',
-        epilog='example: ext_bam -v input.vcf -b input.bam -r hg38 -s wgs_pcr -o output -O DeepOmicsFFPE -t 8',
+        epilog='example: ext_bam -v input.vcf -b input.bam --ref-fasta /path/to/hg38.fa -s wgs_pcr -o output -O DeepOmicsFFPE -t 8',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
     parser.add_argument('-v', '--variant-file', required=True, type=Path, help='Input variants file path')
     parser.add_argument('-b', '--bam-file', required=True, type=Path, help='Input BAM file path')
-    parser.add_argument('-r', '--ref-version', required=True, choices=['hg19', 'hg38'], help='Reference genome version: hg19 or hg38')
     parser.add_argument('-s', '--seq-type', required=True, choices=['wes', 'wgs_pcr', 'wgs_pcrfree'], help='Sequencing type: "wes" for Whole Exome Sequencing, "wgs_pcr" for Whole Genome Sequencing with PCR-based library prep, or "wgs_pcrfree" for Whole Genome Sequencing with PCR-free library prep.')
     parser.add_argument('-o', '--output-prefix', required=True, type=str, help='Prefix to be used for output file names')
     parser.add_argument('-O', '--output-dir', required=False, type=str, default='DeepOmicsFFPE', help='Name of the directory to save the output files')
     parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
-    parser.add_argument('--ref-fasta', required=True, type=Path, help='Reference FASTA file path (must match --ref-version, index .fai required)')
+    parser.add_argument('--ref-fasta', required=True, type=Path, help='Reference FASTA file path (index .fai required)')
 
     parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
 
@@ -108,6 +107,9 @@ def get_context(ref, chrom, pos, length=10):
     fetch_start = max(0, start)
     fetch_end   = min(chrom_len, end)
 
+    if fetch_start >= fetch_end:
+        return 'X' * 21
+
     seq = ref.fetch(chrom, fetch_start, fetch_end)
     seq = re.sub(r'[^ATGCatgc]', 'X', seq).upper()
     seq = 'X' * pad_left + seq + 'X' * pad_right
@@ -141,7 +143,6 @@ if __name__ == "__main__":
     args = parse_args()
     input_vcf = args.variant_file
     input_bam = args.bam_file
-    ref_ver = args.ref_version
     seq_type = args.seq_type
     prefix = args.output_prefix
     outdir = args.output_dir
@@ -239,6 +240,7 @@ if __name__ == "__main__":
 
     # 4. Extract raw read data from bam # multi-processing
     start_time = time.perf_counter()
+    after_bam_time = end_time = save_start_time = start_time  # initialize in case try block fails early
 
     try:
         with concurrent.futures.ProcessPoolExecutor(max_workers=num_worker) as executor:

@@ -3,10 +3,10 @@
 """
 DeepOmicsFFPE is used to distinguish somatic variants from formalin-induced artifacts.
 Author	: DeepOmicsFFPE Team
-Date	: 2025-11-06
-Version : 0.3.0
+Date	: 2026-Apr-01
+Version : 0.3.1-rc2
 Contact : deepomics.ffpe@theragenbio.com
-License : © 2025 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
+License : © 2026 THERAGEN BIO CO.,LTD. ALL RIGHTS RESERVED.
 """
 
 import os
@@ -105,20 +105,19 @@ def parse_args():
 		description='\n'
 					'about: Extract features for DeepOmicsFFPE pipeline.\n'
 					'{0}This tool parses VCF files and BAM to produce input-ready features.\n\n'.format(' ' * 8),
-		epilog='example: doffpe -v input.vcf -b input.bam -r hg38 -s wgs_pcr -o output -O DeepOmicsFFPE -t 8',
+		epilog='example: doffpe -v input.vcf -b input.bam --ref-fasta /path/to/hg38.fa -s wgs_pcr -o output -O DeepOmicsFFPE -t 8',
 		formatter_class=argparse.RawDescriptionHelpFormatter
 	)
 
 	parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
 	parser.add_argument('-v', '--variant-file', required=True, type=Path, help='Input variants file path')
 	parser.add_argument('-b', '--bam-file', required=True, type=Path, help='Input BAM file path')
-	parser.add_argument('-r', '--ref-version', required=True, choices=['hg19', 'hg38'], help='Reference genome version: hg19 or hg38')
 	parser.add_argument('-s', '--seq-type', required=True, choices=['wes', 'wgs_pcr', 'wgs_pcrfree'], help='Sequencing type: "wes" for Whole Exome Sequencing, "wgs_pcr" for Whole Genome Sequencing with PCR-based library prep, or "wgs_pcrfree" for Whole Genome Sequencing with PCR-free library prep.')
 	parser.add_argument('-o', '--output-prefix', required=True, type=str, help='Prefix to be used for output file names')
 	parser.add_argument('-O', '--output-dir', required=False, type=str, default="DeepOmicsFFPE", help='Name of the directory to save the output files')
 	parser.add_argument('-t', '--threads', required=False, type=int, default=0, help='Use multithreading with <int> worker threads')
-	parser.add_argument('--ref-fasta', required=True, type=Path, help='Reference FASTA file path (must match --ref-version, index .fai required)')
-	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status.')
+	parser.add_argument('--ref-fasta', required=True, type=Path, help='Reference FASTA file path (must match ref version, index .fai required)')
+	parser.add_argument('--process-all-variants', action='store_true', help='If specified, include all variants regardless of FILTER status, but it is NOT recommended.')
 	parser.add_argument('--api-key', required=False, default = None, help="To use this program, you must provide an API token. If you have used it previously, the token may already be stored in the [home_directory]/.doffpe path, and you won't need to provide it again.")
 	
 	return parser.parse_args()
@@ -203,7 +202,6 @@ def main() :
 	args = parse_args()
 	input_vcf = args.variant_file
 	input_bam = args.bam_file
-	ref_ver = args.ref_version
 	seq_type = args.seq_type
 	prefix = args.output_prefix
 	outdir = args.output_dir
@@ -250,7 +248,7 @@ def main() :
 	base_dir = os.path.dirname(os.path.abspath(__file__))
 	script_dir = os.path.join(base_dir, "ffpe_utils")
 	
-	cmd_01 = ["python", f"{script_dir}/01_ext_bam.py", "-v", input_vcf, "-b", input_bam, "-r", ref_ver, "-s", seq_type, "-o", prefix, "-O", outdir, "-t", str(num_proc), "--ref-fasta", str(ref_fasta)]
+	cmd_01 = ["python", f"{script_dir}/01_ext_bam.py", "-v", input_vcf, "-b", input_bam, "-s", seq_type, "-o", prefix, "-O", outdir, "-t", str(num_proc), "--ref-fasta", str(ref_fasta)]
 	cmd_04 = ["python", f"{script_dir}/04_fin.py", "-ev", input_expanded_vcf, "-o", prefix, "-O", outdir, "-p", pred_tsv]
 
 	if process_all_variants:
@@ -276,7 +274,6 @@ def main() :
 	parameters = {
 		"variant-file": f"{input_vcf}",
 		"bam-file": f"{input_bam}",
-		"ref-version": f"{ref_ver}",
 		"seq-type": f"{seq_type}",
 		"output-prefix": f"{prefix}",
 		"output-dir-client": f"{outdir}",
